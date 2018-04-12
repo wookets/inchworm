@@ -8,24 +8,25 @@ const c = new Crawler({
 const BASE_URL = 'https://wookets.github.io'
 
 function loadStylesheet (path) {
-	return {
+	c.queue([{
 		uri: `${BASE_URL}${path}`,
+		jquery: false,
 		callback: (err, res, done) => {
-			console.log('res.', res.body)
+			const fontRegex = /Lato-Light\.woff/i
+			const found = res.body.match(fontRegex)
+			console.log('found', !!found)
 			done()
 		}
-	}
+	}])
 }
-const base = 
 
 c.queue([{
 	uri: BASE_URL,
 	callback: (err, res, done) => {
 		const $ = res.$
-		$('script[src], link[rel=stylesheet]').each(function (i, e) {
-			const item = ((e.name == 'link') ? $(this).attr('href') : $(this).attr('src'))
-			loadStylesheet(item)
+		$('link[rel=stylesheet]').each(function (i, e) {
+			loadStylesheet($(this).attr('href'))
 		})
-		done()
+		console.log('done')
 	}
 }])
