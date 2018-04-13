@@ -1,2 +1,5 @@
+
 # site-crawler
-Will crawl your website and find potential issues - if you want it to... 
+
+This library will crawl a web page and produce different observable [rxjs](http://reactivex.io/rxjs/) streams that you can subscribe to handle various page elements, stylesheets and scripts the crawler will encounter. 
+
