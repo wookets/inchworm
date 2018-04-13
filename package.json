@@ -1,7 +1,7 @@
 {
   "name": "site-crawler",
   "version": "0.1.0",
-  "description": "Will crawl your site if you want it to and find different things...",
+  "description": "Will crawl your site using an rxjs interface",
   "main": "index.js",
   "bin": {
     "crawl": "./cli"
@@ -28,6 +28,8 @@
   "dependencies": {
     "babel-preset-env": "1.6.1",
     "babel-register": "6.26.0",
-    "crawler": "1.1.2"
+    "cheerio": "1.0.0-rc.2",
+    "cross-fetch": "2.1.0",
+    "rxjs": "5.5.10"
   }
 }

@@ -1,32 +1,28 @@
 
-import Crawler from 'crawler'
+import fetch from './fetch'
+import { Observable, Subject } from 'rxjs'
+import { load } from 'cheerio'
 
-const c = new Crawler({
-	maxConnections : 10
+const URL = 'https://wookets.github.io'
+
+const stylesheetStream = new Subject()
+stylesheetStream.subscribe( (value) => {
+	console.log('steam css', value)
 })
 
-const BASE_URL = 'https://wookets.github.io'
-
-function loadStylesheet (path) {
-	c.queue([{
-		uri: `${BASE_URL}${path}`,
-		jquery: false,
-		callback: (err, res, done) => {
-			const fontRegex = /Lato-Light\.woff/i
-			const found = res.body.match(fontRegex)
-			console.log('found', !!found)
-			done()
-		}
-	}])
+function pageLoaded (html) {
+	let $ = load(html)
+	$('link[rel=stylesheet]').each( function (i, e) {
+		stylesheetStream.next($(this).attr('href'))
+	})
+	$('script[src]').each( function (i, e) {
+		stylesheetStream.next($(this).attr('src'))
+	})
+	$('a[href]').each( function (i, e) {
+		stylesheetStream.next($(this).attr('href'))
+	}) 
 }
 
-c.queue([{
-	uri: BASE_URL,
-	callback: (err, res, done) => {
-		const $ = res.$
-		$('link[rel=stylesheet]').each(function (i, e) {
-			loadStylesheet($(this).attr('href'))
-		})
-		console.log('done')
-	}
-}])
+fetch(URL)
+.subscribe(pageLoaded)
+
