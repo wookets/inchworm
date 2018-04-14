@@ -1,35 +1,46 @@
 {
-  "name": "site-crawler",
-  "version": "0.1.0",
-  "description": "Will crawl your site using an rxjs interface",
-  "main": "index.js",
+  "name": "inchworm",
+  "version": "0.2.0",
+  "description": "Will crawl across any webpage and expose rxjs observables for you to subscribe",
+  "main": "dist/index.js",
   "bin": {
-    "crawl": "./cli"
+    "inchworm": "./bin/cli"
   },
   "scripts": {
+    "build": "babel src --out-dir dist",
     "test": "jest"
   },
+  "files": [
+    "cli",
+    "dist"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wookets/site-crawler.git"
+    "url": "git+https://github.com/wookets/inchworm.git"
   },
   "keywords": [
     "crawl",
     "js",
     "website",
-    "web"
+	"web",
+	"rxjs",
+	"page",
+	"cheerio"
   ],
   "author": "wookets",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wookets/site-crawler/issues"
+    "url": "https://github.com/wookets/inchworm/issues"
   },
-  "homepage": "https://github.com/wookets/site-crawler#readme",
+  "homepage": "https://github.com/wookets/inchworm#readme",
   "dependencies": {
-    "babel-preset-env": "1.6.1",
-    "babel-register": "6.26.0",
     "cheerio": "1.0.0-rc.2",
     "cross-fetch": "2.1.0",
     "rxjs": "5.5.10"
+  },
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-preset-env": "1.6.1",
+    "jest": "22.4.3"
   }
 }
