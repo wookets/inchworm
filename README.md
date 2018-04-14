@@ -7,10 +7,16 @@ This library will crawl a web page and produce different observable [rxjs](http:
 
 ## Installation
 
-For integrated usage where you can add your own subscriptions (stream processors) to the crawling
+For integrated usage where you can add your own subscriptions (stream processors) to the crawling,
 
 ```bash
-npm i -S page-crawler-rx
+npm i -S inchworm
+```
+
+There is also a command line version which you could use. 
+
+```bash
+npm i -g inchworm
 ```
 
 ```bash
