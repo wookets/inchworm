@@ -19,12 +19,12 @@ There is also a command line version which you could use.
 npm i -g inchworm
 ```
 
+
+## CLI Usage
+
 ```bash
 crawl https://wookets.github.io
 ```
-
-## Usage
-
 
 ## Notes
 
