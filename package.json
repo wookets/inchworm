@@ -1,14 +1,14 @@
 {
   "name": "inchworm",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "Will crawl across any webpage and expose rxjs observables for you to subscribe",
   "main": "dist/index.js",
   "bin": {
     "inchworm": "./bin/cli"
   },
   "scripts": {
-    "build": "babel src --out-dir dist",
-    "test": "jest src"
+    "build": "babel src --out-dir dist --ignore spec.js,test.js",
+    "test": "jest src --coverage"
   },
   "files": [
     "cli",
@@ -22,10 +22,10 @@
     "crawl",
     "js",
     "website",
-	"web",
-	"rxjs",
-	"page",
-	"cheerio"
+    "web",
+    "rxjs",
+    "page",
+    "cheerio"
   ],
   "author": "wookets",
   "license": "MIT",
@@ -41,6 +41,12 @@
   "devDependencies": {
     "babel-cli": "6.26.0",
     "babel-preset-env": "1.6.1",
-    "jest": "22.4.3"
+    "jest": "22.4.3",
+    "nock": "9.2.5"
+  },
+  "jest": {
+    "setupFiles": [
+      "./jest.js"
+    ]
   }
 }

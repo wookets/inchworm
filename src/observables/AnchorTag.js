@@ -1,14 +1,14 @@
 
 import { Subject } from 'rxjs'
 
-export default class LinkTagObserver extends Subject {
+export default class AnchorTagObservable extends Subject {
 
 	constructor () {
 		super()
 	}
 
 	selector ($) {
-		return $('link')
+		return $('a[href]')
 	}
 
 }

@@ -1,7 +1,7 @@
 
 import { Subject } from 'rxjs'
 
-export default class StyleTagObserver extends Subject {
+export default class StyleTagObservable extends Subject {
 
 	constructor () {
 		super()

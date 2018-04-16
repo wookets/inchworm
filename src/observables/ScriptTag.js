@@ -1,7 +1,7 @@
 
 import { Subject } from 'rxjs'
 
-export default class ScriptTagObserver extends Subject {
+export default class ScriptTagObservable extends Subject {
 
 	constructor () {
 		super()
