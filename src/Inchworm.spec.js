@@ -64,8 +64,8 @@ describe('Inchworm', () => {
 		
 		it('should trigger subscribe on finding an anchor tag', (done) => {
 			const worm = new Inchworm()
-			const subscription = worm.anchorTags.subscribe( ($e) => {
-				expect($e.html()).toEqual('Wookets Wove')
+			const subscription = worm.anchorTags.subscribe( el => {
+				expect(el.textContent).toEqual('Wookets Wove')
 				subscription.unsubscribe()
 				done()
 			})
@@ -74,8 +74,8 @@ describe('Inchworm', () => {
 
 		it('should trigger subscribe on finding a link tag', (done) => {
 			const worm = new Inchworm()
-			const subscription = worm.linkTags.subscribe( ($e) => {
-				expect($e.attr('title')).toEqual('Wookets Wove')
+			const subscription = worm.linkTags.subscribe( el => {
+				expect(el.getAttribute('title')).toEqual('Wookets Wove')
 				subscription.unsubscribe()
 				done()
 			})
@@ -84,8 +84,8 @@ describe('Inchworm', () => {
 
 		it('should trigger subscribe on finding a script tag', (done) => {
 			const worm = new Inchworm()
-			const subscription = worm.scriptTags.subscribe( ($e) => {
-				expect($e.attr('src')).toEqual('/js/jquery-2.1.4.min.js')
+			const subscription = worm.scriptTags.subscribe( el => {
+				expect(el.getAttribute('src')).toEqual('/js/jquery-2.1.4.min.js')
 				subscription.unsubscribe()
 				done()
 			})
@@ -94,8 +94,8 @@ describe('Inchworm', () => {
 
 		it('should trigger subscribe on finding a style tag', (done) => {
 			const worm = new Inchworm()
-			const subscription = worm.styleTags.subscribe( ($e) => {
-				expect($e.text()).toEqual('')
+			const subscription = worm.styleTags.subscribe( el => {
+				expect(el.textContent).toMatch('.someMadeUpClass')
 				subscription.unsubscribe()
 				done()
 			})

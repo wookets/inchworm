@@ -1,7 +1,6 @@
 
 import fetch from 'cross-fetch'
 import { Observable, Subject } from 'rxjs'
-import { load } from 'cheerio'
 
 import { AnchorTagSubject, LinkTagSubject, ScriptTagSubject, StyleTagSubject } from './observables'
 import { onPageLoad } from './observers'

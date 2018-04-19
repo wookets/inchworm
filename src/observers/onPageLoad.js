@@ -1,5 +1,5 @@
 
-import { load } from 'cheerio'
+import { JSDOM } from 'jsdom'
 
 
 /**
@@ -11,11 +11,11 @@ import { load } from 'cheerio'
  * @param {array of observables} observables An array of observables that has a selector function we will use to find specific tags in the html doc
  */
 export default function onPageLoad (url, content, observables) {
-	const $ = load(content)
+	const { window: { document } } = new JSDOM(content)
 
-	observables.forEach( (observable) => {
-		observable.selector($).each( (i, e) => {
-			observable.next($(e))
+	observables.forEach( observable => {
+		Array.apply(null, observable.selector(document)).forEach( e => {
+			observable.next((e))
 		})
 	})
 

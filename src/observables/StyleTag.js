@@ -7,8 +7,8 @@ export default class StyleTagObservable extends Subject {
 		super()
 	}
 
-	selector ($) {
-		return $('style')
+	selector (document) {
+		return document.querySelectorAll('style')
 	}
 
 }

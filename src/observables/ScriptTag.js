@@ -7,8 +7,8 @@ export default class ScriptTagObservable extends Subject {
 		super()
 	}
 
-	selector ($) {
-		return $('script')
+	selector (document) {
+		return document.querySelectorAll('script')
 	}
 
 }

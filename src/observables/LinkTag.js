@@ -7,8 +7,8 @@ export default class LinkTagObservable extends Subject {
 		super()
 	}
 
-	selector ($) {
-		return $('link')
+	selector (document) {
+		return document.querySelectorAll('link')
 	}
 
 }

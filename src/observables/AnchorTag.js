@@ -7,8 +7,8 @@ export default class AnchorTagObservable extends Subject {
 		super()
 	}
 
-	selector ($) {
-		return $('a[href]')
+	selector (document) {
+		return document.querySelectorAll('a[href]')
 	}
 
 }

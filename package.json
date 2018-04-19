@@ -1,6 +1,6 @@
 {
   "name": "inchworm",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Will crawl across any webpage and expose rxjs observables for you to subscribe",
   "main": "dist/index.js",
   "bin": {
@@ -25,7 +25,7 @@
     "web",
     "rxjs",
     "page",
-    "cheerio"
+    "jsdom"
   ],
   "author": "wookets",
   "license": "MIT",
@@ -34,8 +34,8 @@
   },
   "homepage": "https://github.com/wookets/inchworm#readme",
   "dependencies": {
-    "cheerio": "1.0.0-rc.2",
     "cross-fetch": "2.1.0",
+    "jsdom": "11.8.0",
     "rxjs": "5.5.10"
   },
   "devDependencies": {
