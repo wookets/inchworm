@@ -7,6 +7,6 @@
 export default function onScriptTagFound ($e) {
 	const url = $e.attr('src')
 	if (url) {
-		
+		// do something		
 	}
 }

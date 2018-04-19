@@ -10,7 +10,7 @@ describe('AnchorTag', () => {
 		const frag = JSDOM.fragment(html)
 		const anchorTag = new AnchorTagSubject()
 		const $anchors = anchorTag.selector(frag)
-		expect($anchors.length).toEqual(2)
+		expect($anchors).toHaveLength(2)
 	})
 
 	it('should have a next function', () => {
