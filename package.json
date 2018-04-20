@@ -9,7 +9,7 @@
   "scripts": {
     "build": "babel src --out-dir dist --ignore spec.js,test.js",
     "healthcheck": "npm run lint && npm run test",
-    "lint": "eslint src",
+    "lint": "eslint src --fix",
     "test": "jest src --coverage"
   },
   "files": [
