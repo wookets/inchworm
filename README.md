@@ -1,7 +1,5 @@
 
-[![Build Status](https://travis-ci.org/wookets/inchworm.svg?branch=master)](https://travis-ci.org/wookets/inchworm)
-
-# inchworm
+# inchworm [![Build Status](https://travis-ci.org/wookets/inchworm.svg?branch=master)](https://travis-ci.org/wookets/inchworm) [![Coverage Status](https://coveralls.io/repos/github/repoir/repoir/badge.svg?branch=master)](https://coveralls.io/github/repoir/repoir?branch=master)
 
 <a href="http://worldartsme.com/cartoon-inchworm-clipart.html" title="Clipart from WorldArtsMe"><img title="Cartoon Inchworm Clipart" width="350" src="http://worldartsme.com/images/cartoon-inchworm-clipart-1.jpg"/> </a>
 
