@@ -13,6 +13,21 @@ For integrated usage where you can add your own subscriptions (observers) to the
 npm i -S inchworm
 ```
 
+## Quick Example
+
+```javascript
+import Inchworm from './Inchworm'
+
+const worm = new Inchworm()
+worm.page.subscribe(({url, content}) => {
+	console.log(content) // will spit out the webpage html
+})
+worm.anchorTags.subscribe( el => {
+	console.log(el.getAttribute('href')) // fired for every links on the page
+})
+worm.crawl('https://wookets.github.io')
+```
+
 ## Subscribing to Crawler Events
 
 When you crawl() a document, inchworm will load the HTML document into Cheerio and crawl for various (e.g. link, script) tags. When it encounters one of these, it will push an event out to any subscribers. Inchworm passes back to you a Cheerio-wrapped DOM Element. 
