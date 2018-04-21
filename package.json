@@ -2,12 +2,13 @@
   "name": "inchworm",
   "version": "0.6.0",
   "description": "Will crawl across any webpage and expose rxjs observables for you to subscribe",
-  "main": "dist/index.js",
+  "main": "dist/Inchworm.js",
   "bin": {
     "inchworm": "./cli"
   },
   "scripts": {
-    "build": "babel src --out-dir dist --ignore spec.js,test.js",
+    "build": "babel src --out-dir dist --ignore __mockdata__,spec.js,test.js",
+    "clean": "rm -rf dist && rm -rf coverage",
     "healthcheck": "npm run lint && npm run test",
     "lint": "eslint src --fix --ignore-pattern __mockdata__",
     "test": "jest src --coverage"
