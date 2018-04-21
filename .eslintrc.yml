@@ -1,3 +1,5 @@
+env: 
+  node: 1
 extends: 
   - eslint:recommended
   - plugin:import/errors

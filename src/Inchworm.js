@@ -1,9 +1,10 @@
 
 import fetch from 'cross-fetch'
 import { Observable, Subject } from 'rxjs'
+import { JSDOM } from 'jsdom'
+import { URL } from 'url'
 
-import { AnchorTagSubject, LinkTagSubject, ScriptTagSubject, StyleTagSubject } from './observables'
-import { onPageLoad } from './observers'
+import { AnchorTagSubject, ImgTagSubject, LinkTagSubject, ScriptTagSubject, StyleTagSubject } from './observables'
 
 export default class Inchworm {
 
@@ -27,15 +28,23 @@ export default class Inchworm {
 
 		// setup parse observable api - allows end user to hook into these
 		this.anchorTags = new AnchorTagSubject()
+		this.imgTags = new ImgTagSubject()
 		this.linkTags = new LinkTagSubject()
 		this.scriptTags = new ScriptTagSubject()
 		this.styleTags = new StyleTagSubject()
-		this.observables = [
+
+		// on page load, these observables will trigger by default - allow a user to append to these
+		this.pageObservables = [
 			this.anchorTags,
+			this.imgTags,
 			this.linkTags,
 			this.scriptTags,
 			this.styleTags
 		]
+
+		// if config.loadStylesheets = true, load the stylesheet and fire a next for users
+		this.linkTags.subscribe(this.onLinkTagObservation.bind(this))
+		this.scriptTags.subscribe(this.onScriptTagObservation.bind(this))
 	}
 
 	/**
@@ -48,7 +57,8 @@ export default class Inchworm {
 	crawl (url, config = {}) {
 		const fetchPromise = fetch(url, config).then((response) => response.text())
 		const fetchObservable = Observable.fromPromise(fetchPromise)
-		const contentType = config || config.headers || config.headers['Content-Type']
+		config.headers = config.headers || {}
+		const contentType = config.headers['Content-Type']
 		switch (contentType) {
 			case 'application/javascript':
 				fetchObservable.subscribe((content) => this.javascriptFiles.next({url, content}))
@@ -57,10 +67,49 @@ export default class Inchworm {
 				fetchObservable.subscribe((content) => this.stylesheets.next({url, content}))
 				break
 			default:
-				fetchObservable.subscribe((content) => onPageLoad(url, content, this.observables)) // subscribe for internal observers
-				fetchObservable.subscribe((content) => this.page.next({url, content})) // subscribe fro external observers
+				this.url = new URL(url) // we need to save the url for later if we want to load stylesheets and scripts which dont have an absolute url
+				fetchObservable.subscribe((content) => this.onPageLoadObservation(url, content)) // subscribe for internal observers
+				fetchObservable.subscribe((content) => this.page.next({url, content})) // subscribe for an external observer
 		}
 		//return fetchObservable
 	}
 
+	/**
+	 * After a page is crawled, we end up here with the raw dom for cheerio to parse and create new subjects using 
+	 * either the built-in observers or user defined observers.
+	 * 
+	 * @param {url} url The url of the document that was loaded
+	 * @param {string} content A raw string of html
+	 * @param {array of observables} observables An array of observables that has a selector function we will use to find specific tags in the html doc
+	 */
+	onPageLoadObservation (url, content) {
+		const { window: { document } } = new JSDOM(content)
+	
+		this.pageObservables.forEach( observable => {
+			Array.apply(null, observable.selector(document)).forEach( e => {
+				observable.next((e))
+			})
+		})
+	}
+
+	onLinkTagObservation (linkEl) {
+		if (this.loadStylesheets && linkEl.getAttribute('rel') === 'stylesheet') {
+			let href = linkEl.getAttribute('href')
+			if (href.indexOf('http') === -1) {
+				href = this.url.origin + href
+			}
+			this.crawl(href, { headers: { 'Content-Type': 'text/css' } }) // load the stylesheet
+		}
+	}
+
+	onScriptTagObservation (scriptEl) {
+		const src = scriptEl.getAttribute('src')
+		if (this.loadJavascriptFiles && src) {
+			let javascriptFileUrl = src
+			if (javascriptFileUrl.indexOf('http') === -1) {
+				javascriptFileUrl = this.url.origin + javascriptFileUrl
+			}
+			this.crawl(javascriptFileUrl, { headers: { 'Content-Type': 'application/javascript' } }) // load the javascript files
+		}
+	}
 }

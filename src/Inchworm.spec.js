@@ -46,7 +46,7 @@ describe('Inchworm', () => {
 	})
 
 
-	describe('crawl', () => {
+	describe('crawl load events', () => {
 
 		it('should expose a page observable that we can subscribe to', (done) => {
 			const worm = new Inchworm()
@@ -58,14 +58,50 @@ describe('Inchworm', () => {
 			worm.crawl('https://mock.com')
 		})
 
+		it('should expose a stylesheet observable that we can subscribe to', (done) => {
+			const worm = new Inchworm({
+				loadStylesheets: true
+			})
+			const subscription = worm.stylesheets.subscribe(({url, content}) => {
+				expect(url).toEqual('https://mock.com/css/font.css')
+				expect(content).toBeDefined()
+				subscription.unsubscribe()
+				done()
+			})
+			worm.crawl('https://mock.com')
+		})
+
+		it('should expose a javascript observable that we can subscribe to', (done) => {
+			const worm = new Inchworm({
+				loadJavascriptFiles: true
+			})
+			const subscription = worm.javascriptFiles.subscribe(({url, content}) => {
+				expect(url).toEqual('https://mock.com/js/jquery-2.1.4.min.js')
+				expect(content).toBeDefined()
+				subscription.unsubscribe()
+				done()
+			})
+			worm.crawl('https://mock.com')
+		})
+
 	})
 
-	describe('crawler events', () => {
+	describe('crawl tag events', () => {
 		
 		it('should trigger subscribe on finding an anchor tag', (done) => {
 			const worm = new Inchworm()
 			const subscription = worm.anchorTags.subscribe( el => {
 				expect(el.textContent).toEqual('Wookets Wove')
+				subscription.unsubscribe()
+				done()
+			})
+			worm.crawl('https://mock.com')
+		})
+
+		it('should trigger subscribe on finding an img tag', (done) => {
+			const worm = new Inchworm()
+			const subscription = worm.imgTags.subscribe( el => {
+				expect(el.getAttribute('src')).toEqual('/img/kube/icon-baseline.png')
 				subscription.unsubscribe()
 				done()
 			})

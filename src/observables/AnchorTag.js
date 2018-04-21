@@ -1,11 +1,7 @@
 
 import { Subject } from 'rxjs'
 
-export default class AnchorTagObservable extends Subject {
-
-	constructor () {
-		super()
-	}
+export default class AnchorTagSubject extends Subject {
 
 	selector (document) {
 		return document.querySelectorAll('a[href]')

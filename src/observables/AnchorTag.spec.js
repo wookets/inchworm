@@ -2,7 +2,7 @@
 import AnchorTagSubject from './AnchorTag'
 import { JSDOM } from 'jsdom'
 
-describe('AnchorTag', () => {
+describe('AnchorTags', () => {
 
 	const html = `<div><a href='#'>Link</a><div><a href='#anc'>Link2</a></div></div>`
 

@@ -1,12 +1,8 @@
 
 import { Subject } from 'rxjs'
 
-export default class StyleTagObservable extends Subject {
-
-	constructor () {
-		super()
-	}
-
+export default class StyleTagSubject extends Subject {
+	
 	selector (document) {
 		return document.querySelectorAll('style')
 	}

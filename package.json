@@ -4,7 +4,7 @@
   "description": "Will crawl across any webpage and expose rxjs observables for you to subscribe",
   "main": "dist/index.js",
   "bin": {
-    "inchworm": "./bin/cli"
+    "inchworm": "./cli"
   },
   "scripts": {
     "build": "babel src --out-dir dist --ignore spec.js,test.js",
@@ -46,7 +46,7 @@
     "babel-preset-env": "1.6.1",
     "eslint": "4.19.1",
     "eslint-plugin-import": "2.11.0",
-    "eslint-plugin-jest": "21.15.0",
+    "eslint-plugin-jest": "21.15.1",
     "jest": "22.4.3",
     "nock": "9.2.5"
   },

@@ -1,11 +1,7 @@
 
 import { Subject } from 'rxjs'
 
-export default class LinkTagObservable extends Subject {
-
-	constructor () {
-		super()
-	}
+export default class LinkTagSubject extends Subject {
 
 	selector (document) {
 		return document.querySelectorAll('link')
