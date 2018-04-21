@@ -77,7 +77,7 @@ worm.crawl('https://wookets.github.io')
 
 ## Subscribing to Crawler Events
 
-When you crawl() a document, inchworm will load the HTML document into Cheerio and crawl for various (e.g. link, script) tags. When it encounters one of these, it will push an event out to any subscribers. Inchworm passes back to you a Cheerio-wrapped DOM Element. 
+When you crawl() a document, inchworm will load the document with fetch and parse the HTML with jsdom. Once jsdom parses the document, we use it's api to crawl for various tags - e.g. link, script, img. When it encounters one of these, it will call next() on the subjects which will invoke any observers that have been attached via subscribe(). Passed to each observer for HTML elements is a [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) object. 
 
 ### Anchor Tags
 
