@@ -5,17 +5,15 @@
 
 <a href="http://worldartsme.com/cartoon-inchworm-clipart.html" title="Clipart from WorldArtsMe"><img title="Cartoon Inchworm Clipart" width="350" src="http://worldartsme.com/images/cartoon-inchworm-clipart-1.jpg"/> </a>
 
-This library will crawl a web page and produce different observable [rxjs](http://reactivex.io/rxjs/) streams that you can subscribe to handle various page elements, stylesheets and scripts the crawler will encounter. 
+This library will crawl a web page using [jsdom](https://github.com/jsdom/jsdom) and produce different observable [rxjs](http://reactivex.io/rxjs/) streams that allow you to subscribe to various page elements, stylesheets and scripts. 
 
 ## Installation
 
-For integrated usage where you can add your own subscriptions (stream processors) to the crawling,
+For integrated usage where you can add your own subscriptions (observers) to the crawling, install it as a dependency in your node project.
 
 ```bash
 npm i -S inchworm
 ```
-
-There is also a command line version which you could use. Documentation for the CLI is at the bottom of this document.
 
 ## Subscribing to Crawler Events
 
@@ -26,19 +24,32 @@ When you crawl() a document, inchworm will load the HTML document into Cheerio a
 ```javascript
 cont worm = new Inchworm()
 // for every anchor tag we find, we emit an observer
-worm.anchorTags.subscribe( $e => {
-	// $e is just a cheerio-wrapped DOM element (e.g. $(<a href="#">...</a>))
+worm.anchorTags.subscribe( el => {
+	// el is just a DOM element (mdn)[https://developer.mozilla.org/en-US/docs/Web/API/Element]
 })
 worm.crawl(url)
 ```
 
+### Image tags
+
+Inline css.
+
+```javascript 
+const worm = new Inchworm()
+worm.imgTags.subscribe( el => {})
+worm.crawl(url)
+```
 ### Link tags
 
 Remember that a <link> tag doesn't automatically mean stylesheet.
 
 ```javascript 
 const worm = new Inchworm()
-worm.linkTags.subscribe( $e => {})
+worm.linkTags.subscribe( el => {
+	if (this.loadStylesheets && linkEl.getAttribute('rel') === 'stylesheet') {
+		let href = linkEl.getAttribute('href')
+	}
+})
 worm.crawl(url)
 ```
 
@@ -48,7 +59,7 @@ Can be an inline script or an external sheet.
 
 ```javascript 
 const worm = new Inchworm()
-worm.scriptTags.subscribe( $e => {})
+worm.scriptTags.subscribe( el => {})
 worm.crawl(url)
 ```
 
@@ -58,13 +69,13 @@ Inline css.
 
 ```javascript 
 const worm = new Inchworm()
-worm.styleTags.subscribe( $e => {})
+worm.styleTags.subscribe( el => {})
 worm.crawl(url)
 ```
 
 ## Subscribing to Document Loading
 
-Inchworm surfaces up document loading to provide you the opportunity to handle these events. You can even handle the first page crawl and do something completely different from what Inchworm provides out of the box. Or if you want Inchworm to load CSS and JS files and expose their contents when they are loaded, you can do that as well. 
+Inchworm surfaces up document loading to provide you the opportunity to go with your own processing. You can even handle the first page crawl and do something completely different from what Inchworm provides out of the box. Or if you want Inchworm to load CSS and JS files and expose their contents when they are loaded, you can do that as well. It should be noted that while Inchworm uses jsdom to parse the HTML page for you, CSS and JS files are left to you - maybe one day I'll find some parsers that would be meaningful, but really it would amount to AST-type parsing given how complex JS and CSS can become. 
 
 ### page
 
@@ -72,7 +83,7 @@ When you invoke the crawl command, it will download the html document from the p
 
 ```javascript
 const worm = new Inchworm()
-worm.page.subscribe( html => {})
+worm.page.subscribe( {url, content} => {})
 worm.crawl('https://wookets.github.io')
 ```
 
@@ -85,8 +96,8 @@ on the Stylesheet Observer so you can listen for it.
 const worm = new Inchworm({
 	loadStylesheets: true
 })
-worm.stylesheets.subscribe( stylesheet => {
-	if (stylesheet.match(/.hello-class/)) {
+worm.stylesheets.subscribe( {url, content} => {
+	if (content.match(/.hello-class/)) {
 		throw new Error('.hello-class is deprecated')
 	}
 })
@@ -101,17 +112,11 @@ Inchworm by default will not load external javascript files from script tags. Wh
 const worm = new Inchworm({
 	loadJavascriptFiles: true
 })
-worm.javascriptFiles.subscribe( js => {})
+worm.javascriptFiles.subscribe( {url, content} => {})
 worm.crawl('https://wookets.github.io')
-```
-
-## CLI Usage
-
-```bash
-npm i -g inchworm
-crawl https://wookets.github.io
 ```
 
 ## Notes
 
 * Requires Node 8.x+
+* "JSDOM doesn't do stream parsing, so it doesn't gain much from rxjs" - true... but it could be one day. And if it does, the API won't have to change. 
