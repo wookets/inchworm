@@ -22,11 +22,58 @@ const worm = new Inchworm()
 worm.page.subscribe(({url, content}) => {
 	console.log(content) // will spit out the webpage html
 })
-worm.anchorTags.subscribe( el => {
-	console.log(el.getAttribute('href')) // fired for every links on the page
-})
 worm.crawl('https://wookets.github.io')
 ```
+
+## More Complete Example
+
+```javascript
+const Inchworm = require('inchworm')
+const { Subject } = require('rxjs')
+
+const worm = new Inchworm({
+	loadStylesheets: 'true',
+	loadJavascriptFiles: 'true'
+})
+worm.page.subscribe( ({url, content}) => {
+	console.log('onPageLoad', url, content.length)
+})
+worm.javascriptFiles.subscribe( ({url, content}) => {
+	console.log('  onJsLoad', url, content.length)
+})
+worm.stylesheets.subscribe( ({url, content}) => {
+	console.log(' onCssLoad', url, content.length)
+})
+worm.anchorTags.subscribe( el => {
+	console.log(' anchorTag', el.getAttribute('href'))
+})
+worm.imgTags.subscribe( el => {
+	console.log('    imgTag', el.outerHTML)
+})
+worm.linkTags.subscribe( el => {
+	console.log('   linkTag', el.getAttribute('rel'))
+})
+worm.scriptTags.subscribe( el => {
+	console.log(' scriptTag', el.getAttribute('src'))
+})
+worm.styleTags.subscribe( el => {
+	console.log('  styleTag', el.outerHTML)
+})
+// lets go custom... 
+class H1Tags extends Subject {
+	selector (dom) {
+		return dom.querySelectorAll('h1')
+	}
+}
+const h1Tags = new H1Tags()
+h1Tags.subscribe( el => {
+	console.log('     h1Tag', el.outerHTML)
+})
+worm.pageObservables.push(h1Tags) // registers it with the internal onPageLoadObserver which uses jsdom's parser
+
+worm.crawl('https://wookets.github.io')
+```
+
 
 ## Subscribing to Crawler Events
 
