@@ -1,6 +1,6 @@
 {
   "name": "inchworm",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Will crawl across any webpage and expose rxjs observables for you to subscribe",
   "main": "dist/index.js",
   "bin": {
