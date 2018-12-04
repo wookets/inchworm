@@ -1,0 +1,15 @@
+
+export const anchorTagSelector = (dom) => dom.querySelectorAll('a[href]')
+export const footerTagSelector = (dom) => dom.querySelectorAll('footer')
+export const headerTagSelector = (dom) => dom.querySelectorAll('header')
+export const headingTagSelector = (dom) => dom.querySelectorAll('h1, h2, h3, h4, h5, h6')
+export const imgTagSelector = (dom) => dom.querySelectorAll('img')
+export const linkTagSelector = (dom) => dom.querySelectorAll('link')
+export const mainTagSelector = (dom) => dom.querySelectorAll('main')
+export const metaTagSelector = (dom) => dom.querySelectorAll('meta')
+export const navTagSelector = (dom) => dom.querySelectorAll('nav')
+export const scriptTagSelector = (dom) => dom.querySelectorAll('script')
+export const styleTagSelector = (dom) => dom.querySelectorAll('style')
+
+//export const stylesheetSelector = (dom) => dom.querySelectorAll('link[rel=stylesheet]')
+//export const javascriptFileSelector = (dom) => dom.querySelectorAll('script[src]')

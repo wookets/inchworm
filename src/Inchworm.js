@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs'
 import { JSDOM } from 'jsdom'
 import { URL } from 'url'
 
-import { AnchorTagSubject, ImgTagSubject, LinkTagSubject, ScriptTagSubject, StyleTagSubject } from './observables'
+import * as Selectors from './DomSelectors'
 
 export default class Inchworm {
 
@@ -26,22 +26,17 @@ export default class Inchworm {
 		this.stylesheets = new Subject()
 		this.javascriptFiles = new Subject()
 
-		// setup parse observable api - allows end user to hook into these
-		this.anchorTags = new AnchorTagSubject()
-		this.imgTags = new ImgTagSubject()
-		this.linkTags = new LinkTagSubject()
-		this.scriptTags = new ScriptTagSubject()
-		this.styleTags = new StyleTagSubject()
-
 		// on page load, these observables will trigger by default - allow a user to append to these
-		this.pageObservables = [
-			this.anchorTags,
-			this.imgTags,
-			this.linkTags,
-			this.scriptTags,
-			this.styleTags
-		]
+		this.pageObservables = [] // Object.values(Selectors)
 
+		// setup parse observable api - allows end user to hook into these
+		Object.keys(Selectors).forEach( key => {
+			const name = key.replace('Selector', 's')
+			this[name] = new Subject()
+			this[name].selector = Selectors[key] // eslint-disable-line
+			this.pageObservables.push(this[name])
+		})
+		
 		// if config.loadStylesheets = true, load the stylesheet and fire a next for users
 		this.linkTags.subscribe(this.onLinkTagObservation.bind(this))
 		this.scriptTags.subscribe(this.onScriptTagObservation.bind(this))
@@ -84,7 +79,7 @@ export default class Inchworm {
 	 */
 	onPageLoadObservation (url, content) {
 		const { window: { document } } = new JSDOM(content)
-	
+		
 		this.pageObservables.forEach( observable => {
 			Array.apply(null, observable.selector(document)).forEach( e => {
 				observable.next((e))
