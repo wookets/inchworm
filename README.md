@@ -1,6 +1,8 @@
 
 # inchworm [![Build Status](https://travis-ci.org/wookets/inchworm.svg?branch=master)](https://travis-ci.org/wookets/inchworm) [![Coverage Status](https://coveralls.io/repos/github/wookets/inchworm/badge.svg)](https://coveralls.io/github/wookets/inchworm)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/wookets/inchworm.svg)](https://greenkeeper.io/)
+
 <a href="http://worldartsme.com/cartoon-inchworm-clipart.html" title="Clipart from WorldArtsMe"><img title="Cartoon Inchworm Clipart" width="350" src="http://worldartsme.com/images/cartoon-inchworm-clipart-1.jpg"/> </a>
 
 This library will crawl a web page using [jsdom](https://github.com/jsdom/jsdom) and produce different observable [rxjs](http://reactivex.io/rxjs/) streams that allow you to subscribe to various page elements, stylesheets and scripts. 
